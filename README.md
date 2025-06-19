@@ -13,6 +13,7 @@
  
 # The Therapeutic Nanobody Profiler: characterizing and predicting nanobody developability to improve therapeutic design
 
+</div>
 
 ## About
 
