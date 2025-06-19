@@ -1,0 +1,6 @@
+.ipynb_checkpoints/
+data/
+build/
+dist/
+theraprofnano.egg-info/
+__pycache__/

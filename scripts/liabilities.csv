@@ -1,0 +1,13 @@
+# Define liabilities, name, region(s), regex motif
+Unpaired Cys (C),fv,C
+N-linked glycosylation (NXS/T X not P),fv,N[^P][ST]
+Met oxidation (M),cdrs;verniers,M
+Trp oxidation (W),cdrs;verniers,W
+Asn deamidation (NG NS NT),cdrs;verniers,N[GST]
+Asp isomerisation (DG DS DT DD DH),cdrs;verniers,D[GSTDH]
+Lysine Glycation (KE KD EK ED),cdrs;verniers,KE|KD|EK|ED
+N-terminal glutamate (VH and VL) (E),nterminus,E
+Integrin binding (RGD RYD LDV),fv,RGD|RYD|LDV
+CD11c/CD18 binding (GPR),fv,GPR
+Fragmentation (DP),cdrs;verniers,DP
+Polyreactivity (RR VG VV VVV WW WWW WXW),fv,RR|VG|VV|VVV|WW|WWW|WXW
