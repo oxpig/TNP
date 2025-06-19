@@ -8,7 +8,13 @@
                 '' ''                                                       '' ''
 -----------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------
-# About
+
+<div align="center">    
+ 
+# The Therapeutic Nanobody Profiler: characterizing and predicting nanobody developability to improve therapeutic design
+
+
+## About
 
 This software was developed in the _Oxford Protein Informatics Group_ ([OPIG](http://opig.stats.ox.ac.uk/)), Department of Statistics, University of Oxford with the support of Twist Bioscience.
 
@@ -19,23 +25,22 @@ This software was developed in the _Oxford Protein Informatics Group_ ([OPIG](ht
 
 ## Citing this work
 
-If you are using this resource for a publication, please cite the following paper:
+The code and data in this package is based on the <a href="">following paper.</a> If you use it, please cite:
 
 [ADD IN PREPRINT]
 
-The code and data in this package is based on the <a href="">following paper.</a> If you use it, please cite:
-
 ```tex
 @article{gordon2025,
-  title={The Therapeutic Nanobody Profiler},
+  title={The Therapeutic Nanobody Profiler: characterizing and predicting nanobody developability to improve therapeutic design},
   author={},
   journal={bioRxiv},
   pages={},
   year={2025},
   publisher={Cold Spring Harbor Laboratory}
 }
+```
 
-# Installation
+## Installation
 
 In the package directory:
 
@@ -49,7 +54,7 @@ In the package directory:
 
 Set PSA files as executable with chmod +x bin/TNP
 
-# Usage
+## Usage
 
 * For a single sequence
 
