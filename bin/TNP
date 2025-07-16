@@ -366,24 +366,24 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
                     json.dump(cdr3_conf_graph,fo4)
 
                 #PSH GRAPH
-                psh_graph['data']['data01'][0][5] = nb_tnp_dictionary['Hydrophobicity and Charge'][0]['Patch_Hydrophob_CDR']
-                psh_graph['data']['data01'][1][5] = nb_tnp_dictionary['Hydrophobicity and Charge'][0]['Patch_Hydrophob_CDR']
+                psh_graph['data']['data01'][0][5] = nb_tnp_dictionary['PSH']#['Hydrophobicity and Charge'][0]['Patch_Hydrophob_CDR']
+                psh_graph['data']['data01'][1][5] = nb_tnp_dictionary['PSH']#['Hydrophobicity and Charge'][0]['Patch_Hydrophob_CDR']
                 psh_graph['axes'][0]['lines'][4]['color'] = flag2hex[nb_tnp_dictionary['Flags']['PSH']]       
 
                 with open(os.path.join(output, "PSH_D3_Template.json"),"w") as fo4:
                     json.dump(psh_graph,fo4)
 
                 #PPC GRAPH
-                ppc_graph['data']['data01'][0][3] = nb_tnp_dictionary['Hydrophobicity and Charge'][0]['Patch_Pos_Charge_CDR']
-                ppc_graph['data']['data01'][1][3] = nb_tnp_dictionary['Hydrophobicity and Charge'][0]['Patch_Pos_Charge_CDR']
+                ppc_graph['data']['data01'][0][3] = nb_tnp_dictionary['PPC']#['Hydrophobicity and Charge'][0]['Patch_Pos_Charge_CDR']
+                ppc_graph['data']['data01'][1][3] = nb_tnp_dictionary['PPC']#['Hydrophobicity and Charge'][0]['Patch_Pos_Charge_CDR']
                 ppc_graph['axes'][0]['lines'][2]['color'] = flag2hex[nb_tnp_dictionary['Flags']['PPC']]
 
                 with open(os.path.join(output, "PPC_D3_Template.json"),"w") as fo4:
                     json.dump(ppc_graph,fo4)
 
                 #PNC GRAPH
-                pnc_graph['data']['data01'][0][3] = nb_tnp_dictionary['Hydrophobicity and Charge'][0]['Patch_Neg_Charge_CDR']
-                pnc_graph['data']['data01'][1][3] = nb_tnp_dictionary['Hydrophobicity and Charge'][0]['Patch_Neg_Charge_CDR']
+                pnc_graph['data']['data01'][0][3] = nb_tnp_dictionary['PNC']#['Hydrophobicity and Charge'][0]['Patch_Neg_Charge_CDR']
+                pnc_graph['data']['data01'][1][3] = nb_tnp_dictionary['PNC']#['Hydrophobicity and Charge'][0]['Patch_Neg_Charge_CDR']
                 pnc_graph['axes'][0]['lines'][2]['color'] = flag2hex[nb_tnp_dictionary['Flags']['PNC']]
 
                 with open(os.path.join(output, "PNC_D3_Template.json"),"w") as fo4:
