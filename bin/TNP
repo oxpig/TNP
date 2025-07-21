@@ -571,6 +571,7 @@ if __name__ == "__main__":
     elif args.model_folder:
         results_dict = {}
         print("You are running TNP on a set of pre-computed models.")
+        print("WARNING: Structures should not contain hydrogens - hydrogens are stripped when in sequence mode.")
     
         job_params = {}
 

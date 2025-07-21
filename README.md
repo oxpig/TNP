@@ -65,9 +65,10 @@ Set PSA files as executable with chmod +x bin/TNP
 
 `TNP --name my_fasta_file --output /path/to/output/directory --file /path/to/my/fasta/file/filename.fasta`
 
-* For a folder with already available PDB models
+* For a folder with already available PDB models: these structures should NOT contain hydrogens
 
 `TNP --name my_models --output /path/to/output/directory --models /path/to/my/models`
+
 
 For more options and information, run `TNP --help`.
 
