@@ -322,6 +322,7 @@ def get_modelling_details(input_pdb, type="", scheme="imgt", save=False):
     """
     Compile a modelling_details dict from an input PDB. This can be saved into JSON file
     """
+
     pdb_sequences = dict(get_sequences_from_pdb(input_pdb))
     pdb_numberings = number_sequences(pdb_sequences, scheme=scheme)
     pdb_bfactors = get_bfactors_from_pdb(input_pdb)

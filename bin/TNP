@@ -181,6 +181,8 @@ def get_tetrad_residues(sequence):
 # Main function that runs TNP on a sequence
 def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
 
+    print(header)
+
     if True:
         CDR_data_loc = os.path.join(output, "Outputs")
         Model_data_loc = os.path.join(output, "Final_Models")
@@ -249,7 +251,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
                 # import sys
                 # sys.path.append("../scripts/")
                 from scripts.process_pdb import get_modelling_details
-                modelling_details = get_modelling_details(os.path.join(abbrev_name, abbrev_name)+".pdb",type='nanobody',save=True)
+                modelling_details = get_modelling_details(os.path.join(abbrev_name, abbrev_name)+".pdb", type='nanobody', save=True)
                 fo.write("Saved modelling_details.jsonp for NanoBodyBuilder2 (ImmuneBuilder) model\n")
 
             except Exception as e:
