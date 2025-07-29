@@ -10,9 +10,9 @@ cpus = 23
 # Finally, we used Arpeggio (version 1.4.1) to calculate interatomic interactions 
 #   after converting antibody hydrogenated structures to cif format
 dataset_name = 'vhh_tsd'
-structure_path = '/vols/bitbucket/gordon/tnp_data/reduced_strucs/reduced_'+dataset_name
+structure_path = '/reduced_strucs/reduced_'+dataset_name
 structures = [s for s in os.listdir(structure_path)]
-output_path = '/vols/bitbucket/gordon/tnp_data/arpeggio/'
+output_path = '/arpeggio/'
 
 print('TOTAL STRUCTURES:', len(structures))
 
