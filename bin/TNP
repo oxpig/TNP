@@ -13,14 +13,14 @@
 from theraprofnano.CDR_Profiler.CDR_Assigner import main as region_and_aa_dicts
 from theraprofnano.CDR_Profiler.CDR3_Conf_Assigner import main_compactness as compactness_calc
 from theraprofnano.Hydrophobicity_and_Charge_Profiler.Hydrophobicity_and_Charge_Assigner import CreateAnnotation as hydrophob_and_charge_calc
-from theraprofnano.Plotters.CDRLen_D3_Template import cdr_graph
+from theraprofnano.Plotters.CDRLen_D3_Template import cdr_graph # called in function for web-app
 from theraprofnano.Plotters.CDR3Len_D3_Template import cdr3_len_graph
 from theraprofnano.Plotters.CDR3Conf_D3_Template import cdr3_conf_graph
 from theraprofnano.Plotters.PSH_D3_Template import psh_graph
 from theraprofnano.Plotters.PPC_D3_Template import ppc_graph
 from theraprofnano.Plotters.PNC_D3_Template import pnc_graph
 import numpy as np
-from ABDB.AbPDB import AntibodyParser
+#from ABDB.AbPDB import AntibodyParser
 from Bio import SeqIO
 import pickle as pickle
 import subprocess,time,re,argparse,json,os,sys,shutil
@@ -398,64 +398,64 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
         return {}
 
 
-def tnp_protocol_model_mode(model_path,h_scale,output,web,verbose):  #user supplies the directory where all the models sit
+# def tnp_protocol_model_mode(model_path,h_scale,output,web,verbose):  #user supplies the directory where all the models sit
 
-    model_name = model_path.split('/')[-1][:-4]
-    full_model_root = "/".join(os.path.abspath(model_path).split('/')[0:-1])
+#     model_name = model_path.split('/')[-1][:-4]
+#     full_model_root = "/".join(os.path.abspath(model_path).split('/')[0:-1])
 
-    p = AntibodyParser(QUIET=True)
-    p.set_numbering_scheme('imgt'); p.set_region_definition('imgt')
+#     p = AntibodyParser(QUIET=True)
+#     p.set_numbering_scheme('imgt'); p.set_region_definition('imgt')
 
-    try:
-        s = p.get_antibody_structure(model_path[:-4],model_path)
-        # Additional argument for modified ABDB version
-        #s = p.get_antibody_structure(model_path[:-4],model_path,allowed_species=["human","mouse"])
+#     try:
+#         s = p.get_antibody_structure(model_path[:-4],model_path)
+#         # Additional argument for modified ABDB version
+#         #s = p.get_antibody_structure(model_path[:-4],model_path,allowed_species=["human","mouse"])
         
-        fab = s[0]["H"]
+#         fab = s[0]["H"]
 
-        tot = 0
-        cdr3_len = 0
+#         tot = 0
+#         cdr3_len = 0
 
-        for i, cdr in enumerate(fab.get_CDRs()):
-            for res in cdr.get_residues():
-                tot += 1
-                if i == 2: # 3rd round, cdr3
-                    cdr3_len += 1
+#         for i, cdr in enumerate(fab.get_CDRs()):
+#             for res in cdr.get_residues():
+#                 tot += 1
+#                 if i == 2: # 3rd round, cdr3
+#                     cdr3_len += 1
 
-        s.save(full_model_root+"/Final_Models/"+model_name+".pdb")
+#         s.save(full_model_root+"/Final_Models/"+model_name+".pdb")
 
-        #Calculate CDR3 compactness
-        cdr3_compactness_rho = compactness_calc(model_path, "imgt", verbose=verbose)
+#         #Calculate CDR3 compactness
+#         cdr3_compactness_rho = compactness_calc(model_path, "imgt", verbose=verbose)
 
-        if cdr3_compactness_rho != None:
-            cdr3_compactness = cdr3_compactness_rho / cdr3_len
-        else:
-            cdr3_compactness = np.nan()
+#         if cdr3_compactness_rho != None:
+#             cdr3_compactness = cdr3_compactness_rho / cdr3_len
+#         else:
+#             cdr3_compactness = np.nan()
 
-        #Calculate charge/hydrophobicity properties
-        hydrophob_and_charge_dict = hydrophob_and_charge_calc(h_scale, 7.4, model_path, "IG", "imgt", verbose=verbose)
+#         #Calculate charge/hydrophobicity properties
+#         hydrophob_and_charge_dict = hydrophob_and_charge_calc(h_scale, 7.4, model_path, "IG", "imgt", verbose=verbose)
 
-        nb_tnp_dictionary = {}
-        nb_tnp_dictionary['name'] = model_name
-        nb_tnp_dictionary['Total CDR Length'] = tot
-        nb_tnp_dictionary['CDR3 Length'] = cdr3_len
-        nb_tnp_dictionary['CDR3 Compactness'] = cdr3_compactness
-        nb_tnp_dictionary['PSH'] = hydrophob_and_charge_dict[0]['Patch_Hydrophob_CDR']
-        nb_tnp_dictionary['PPC'] = hydrophob_and_charge_dict[0]['Patch_Pos_Charge_CDR']
-        nb_tnp_dictionary['PNC'] = hydrophob_and_charge_dict[0]['Patch_Neg_Charge_CDR']
+#         nb_tnp_dictionary = {}
+#         nb_tnp_dictionary['name'] = model_name
+#         nb_tnp_dictionary['Total CDR Length'] = tot
+#         nb_tnp_dictionary['CDR3 Length'] = cdr3_len
+#         nb_tnp_dictionary['CDR3 Compactness'] = cdr3_compactness
+#         nb_tnp_dictionary['PSH'] = hydrophob_and_charge_dict[0]['Patch_Hydrophob_CDR']
+#         nb_tnp_dictionary['PPC'] = hydrophob_and_charge_dict[0]['Patch_Pos_Charge_CDR']
+#         nb_tnp_dictionary['PNC'] = hydrophob_and_charge_dict[0]['Patch_Neg_Charge_CDR']
 
-        nb_tnp_dictionary['Flags'] = { "L"     : assign_flag("L", tot),
-                                "L3"    : assign_flag("L3", cdr3_len),
-                                "C"     : assign_flag("C", cdr3_compactness),
-                                "PSH"   : assign_flag("PSH", hydrophob_and_charge_dict[0]['Patch_Hydrophob_CDR']),
-                                "PPC"   : assign_flag("PPC", hydrophob_and_charge_dict[0]['Patch_Pos_Charge_CDR']),
-                                "PNC"   : assign_flag("PNC", hydrophob_and_charge_dict[0]['Patch_Neg_Charge_CDR'])}
+#         nb_tnp_dictionary['Flags'] = { "L"     : assign_flag("L", tot),
+#                                 "L3"    : assign_flag("L3", cdr3_len),
+#                                 "C"     : assign_flag("C", cdr3_compactness),
+#                                 "PSH"   : assign_flag("PSH", hydrophob_and_charge_dict[0]['Patch_Hydrophob_CDR']),
+#                                 "PPC"   : assign_flag("PPC", hydrophob_and_charge_dict[0]['Patch_Pos_Charge_CDR']),
+#                                 "PNC"   : assign_flag("PNC", hydrophob_and_charge_dict[0]['Patch_Neg_Charge_CDR'])}
 
-        return nb_tnp_dictionary
+#         return nb_tnp_dictionary
     
-    except:
-        nb_tnp_dictionary = {}
-        return nb_tnp_dictionary
+#     except:
+#         nb_tnp_dictionary = {}
+#         return nb_tnp_dictionary
 
 ####################################################################################################
 ####################################################################################################

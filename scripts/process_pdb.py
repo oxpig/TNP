@@ -4,11 +4,14 @@ import json
 import anarci
 from Bio.PDB import PDBParser
 from Bio import PDB
-from ABDB.AbPDB.AntibodyParser import AntibodyParser
-from ABDB.AbPDB.Select import select_all
+
+#from ABDB.AbPDB.AntibodyParser import AntibodyParser
+#from ABDB.AbPDB.Select import select_all
+
 #from ABDB.AB_Utils.sequence_liabilities import get_liabilities
 from scripts.sequence_liabilities import get_liabilities # modified from sabdab version
-from ABDB.AB_Utils.region_definitions import annotate_regions
+#from ABDB.AB_Utils.region_definitions import annotate_regions
+from scripts.region_definitions import annotate_regions
 from ImmuneBuilder.sequence_checks import number_sequences
 
 # dict to convert three letter code to one letter code
@@ -60,30 +63,30 @@ def get_sequences_from_pdb(input_pdb):
 
     return model_sequences
 
-def renumber_pdb(input_pdb, scheme="imgt"):
-    """
-    Renumbers an input structure into the IMGT numbering scheme.
-    """
-    schemes_list = available_schemes if scheme == "all" else [scheme]
+# def renumber_pdb(input_pdb, scheme="imgt"):
+#     """
+#     Renumbers an input structure into the IMGT numbering scheme.
+#     """
+#     schemes_list = available_schemes if scheme == "all" else [scheme]
 
-    for scheme in schemes_list:
-        # Define output filepaths
-        output_dir = os.path.dirname(input_pdb)
-        output_filename = ''.join([os.path.basename(input_pdb).split('.')[0],'_',scheme, '.pdb'])
-        output_structure_file = os.path.join(output_dir, output_filename)
+#     for scheme in schemes_list:
+#         # Define output filepaths
+#         output_dir = os.path.dirname(input_pdb)
+#         output_filename = ''.join([os.path.basename(input_pdb).split('.')[0],'_',scheme, '.pdb'])
+#         output_structure_file = os.path.join(output_dir, output_filename)
 
-        # Renumber the prediction with the selected scheme
-        p = AntibodyParser(QUIET=True)
-        p.set_numbering_scheme(scheme=scheme)
-        p.set_numbering_method("anarci")
-        s = p.get_antibody_structure('modeller_out', input_pdb)
+#         # Renumber the prediction with the selected scheme
+#         p = AntibodyParser(QUIET=True)
+#         p.set_numbering_scheme(scheme=scheme)
+#         p.set_numbering_method("anarci")
+#         s = p.get_antibody_structure('modeller_out', input_pdb)
 
-        for r in s.get_residues():
-            r.parent.id = r.chain_type
+#         for r in s.get_residues():
+#             r.parent.id = r.chain_type
 
-        # Output structure file
-        with open(output_structure_file, 'w') as out:
-            out.write(s._get_output_string(select_all(), 1)[0])
+#         # Output structure file
+#         with open(output_structure_file, 'w') as out:
+#             out.write(s._get_output_string(select_all(), 1)[0])
 
 def get_liabilities_from_pdb(input_pdb, scheme="imgt", save=False, restrict_species=True):
     """

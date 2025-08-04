@@ -1,5 +1,6 @@
 import pickle as pickle
-from ABDB.AB_Utils import Accept    #Required to assign CDR or Not in a given definition
+#from ABDB.AB_Utils import Accept    #Required to assign CDR or Not in a given definition
+from scripts.region_definitions import Accept
 from anarci import run_anarci   #Required to number the chains
 from optparse import OptionParser   #Required for arguments
 

@@ -50,7 +50,7 @@ In the package directory:
 **Requirements**
 
 - [ANARCI](https://github.com/oxpig/ANARCI)
-- [SAbDab](https://github.com/oxpig/SAbDab)
+- [SAbDab](https://github.com/oxpig/SAbDab) (if using model mode)
 - [NanoBodyBuilder2](https://github.com/oxpig/ImmuneBuilder)
 
 Set PSA files as executable with chmod +x bin/TNP
@@ -65,9 +65,12 @@ Set PSA files as executable with chmod +x bin/TNP
 
 `TNP --name my_fasta_file --output /path/to/output/directory --file /path/to/my/fasta/file/filename.fasta`
 
-* For a folder with already available PDB models: these structures should NOT contain hydrogens
+<!-- * For a folder with already available PDB models: 
+  
+  - These structures should NOT contain hydrogens
+  - SAbDab needs to be installed
 
-`TNP --name my_models --output /path/to/output/directory --models /path/to/my/models`
+`TNP --name my_models --output /path/to/output/directory --models /path/to/my/models` -->
 
 
 For more options and information, run `TNP --help`.
