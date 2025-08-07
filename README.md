@@ -49,9 +49,11 @@ In the package directory:
 
 **Requirements**
 
+- python 3.10
 - [ANARCI](https://github.com/oxpig/ANARCI)
-- [SAbDab](https://github.com/oxpig/SAbDab) (if using model mode)
 - [NanoBodyBuilder2](https://github.com/oxpig/ImmuneBuilder)
+- [DSSP](https://anaconda.org/salilab/dssp)
+- biopython 1.77
 
 Set PSA files as executable with chmod +x bin/TNP
 

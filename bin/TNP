@@ -570,33 +570,33 @@ if __name__ == "__main__":
         with open("TNP_Results_Multientry.json","w") as fo:
                 json.dump(results_dict,fo)
 
-    elif args.model_folder:
-        results_dict = {}
-        print("You are running TNP on a set of pre-computed models.")
-        print("WARNING: Structures should not contain hydrogens - hydrogens are stripped when in sequence mode.")
+    # elif args.model_folder:
+    #     results_dict = {}
+    #     print("You are running TNP on a set of pre-computed models.")
+    #     print("WARNING: Structures should not contain hydrogens - hydrogens are stripped when in sequence mode.")
     
-        job_params = {}
+    #     job_params = {}
 
-        for pdb in glob.glob(args.model_folder+"/*pdb"):
-            job_params[pdb] = [pdb,h_scale,output,web,verbose]
+    #     for pdb in glob.glob(args.model_folder+"/*pdb"):
+    #         job_params[pdb] = [pdb,h_scale,output,web,verbose]
 
-        subprocess.call(["mkdir",args.model_folder+"/Final_Models/"])
-        subprocess.call(["mkdir",args.model_folder+"/tmp/"])
+    #     subprocess.call(["mkdir",args.model_folder+"/Final_Models/"])
+    #     subprocess.call(["mkdir",args.model_folder+"/tmp/"])
 
-        pool = mp.Pool(ncores)
-        j_list = [ pool.apply_async(tnp_protocol_model_mode, args = (blah) ) for blah in list(job_params.values())]
-        mp_results = [ j.get() for j in j_list ]
+    #     pool = mp.Pool(ncores)
+    #     j_list = [ pool.apply_async(tnp_protocol_model_mode, args = (blah) ) for blah in list(job_params.values())]
+    #     mp_results = [ j.get() for j in j_list ]
 
 
-        results_dict = {}
-        for r in mp_results:
-            if r:
-                results_dict[r['name']] = r
+    #     results_dict = {}
+    #     for r in mp_results:
+    #         if r:
+    #             results_dict[r['name']] = r
     
-        print("Job Complete!")
+    #     print("Job Complete!")
 
-        with open("TNP_Results_Multientry.json","w") as fo:
-            json.dump(results_dict,fo)
+    #     with open("TNP_Results_Multientry.json","w") as fo:
+    #         json.dump(results_dict,fo)
 
     elapsed = (time.time() - start)
     print(linedivide)
