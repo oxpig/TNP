@@ -11,7 +11,7 @@
 
 <div align="center">    
  
-# The Therapeutic Nanobody Profiler: characterizing and predicting nanobody developability to improve therapeutic design
+# The Therapeutic Nanobody Profiler: characterising and predicting nanobody developability to improve therapeutic design
 
 </div>
 
@@ -21,14 +21,19 @@ This software was developed in the _Oxford Protein Informatics Group_ ([OPIG](ht
 
 **Authors**
 
-* Gemma L. Gordon (Oxford), 
-* Charlotte M. Deane (Oxford)
+* Gemma L. Gordon (University of Oxford)
+* João Gervasio (University of Oxford, Okinawa Institute of Science and Technology Graduate University)
+* Colby Souders (Twist Bioscience)
+* Charlotte M. Deane (University of Oxford)
+
+
+## Abstract 
+
+Developability optimisation is an important step for successful biotherapeutic design. For monoclonal antibodies, developability is relatively well characterised. However, progress for novel biotherapeutics such as nanobodies is more limited. Differences in structural features between antibodies and nanobodies render current antibody computational methods unsuitable for direct application to nanobodies. Following the principles of the Therapeutic Antibody Profiler (TAP), we have built the Therapeutic Nanobody Profiler (TNP), an open-source computational tool for predicting nanobody developability. Tailored specifically for nanobodies, it accounts for their unique properties compared to conventional antibodies for more efficient development of this novel therapeutic format. We calibrate TNP metrics using the 36 currently available clinical-stage nanobody sequences. We also collected experimental developability data for 108 nanobodies and examine how these results are related to the TNP guidelines. TNP is available as a web application which you can find <a href="opig.stats.ox.ac.uk/webapps/tnp">on the OPIG website.</a>
 
 ## Citing this work
 
 The code and data in this package is based on the <a href="">following paper.</a> If you use it, please cite:
-
-[ADD IN PREPRINT]
 
 ```tex
 @article{gordon2025,
