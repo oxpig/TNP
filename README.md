@@ -60,7 +60,6 @@ In the package directory:
 - [DSSP](https://anaconda.org/salilab/dssp)
 - biopython 1.77
 
-Set PSA files as executable with chmod +x bin/TNP
 
 ## Usage
 
