@@ -476,7 +476,7 @@ if __name__ == "__main__":
     group = parser.add_mutually_exclusive_group(required=True)
     group.add_argument('--seq','-s',dest='sequence',help='Nanobody sequence for TNP analysis - in the form "[sequence]"')
     group.add_argument('--file','-f',dest='file',help='A file containing multiple nanobody sequences in FASTA format.', type=os.path.abspath)
-    group.add_argument('--models','-m',dest='model_folder',help='A folder containing nanobody models for processing through TNP', type=os.path.abspath)
+    # group.add_argument('--models','-m',dest='model_folder',help='A folder containing nanobody models for processing through TNP', type=os.path.abspath)
 
     args = parser.parse_args()
 
