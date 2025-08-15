@@ -33,7 +33,7 @@ Developability optimisation is an important step for successful biotherapeutic d
 
 ## Citing this work
 
-The code and data in this package is based on the <a href="">following paper.</a> If you use it, please cite:
+The code and data in this package is based on the <a href="https://doi.org/10.1101/2025.08.11.669635">following paper.</a> If you use it, please cite:
 
 ```tex
 @article{gordon2025,
@@ -42,7 +42,8 @@ The code and data in this package is based on the <a href="">following paper.</a
   journal={bioRxiv},
   pages={},
   year={2025},
-  publisher={Cold Spring Harbor Laboratory}
+  publisher={Cold Spring Harbor Laboratory},
+  doi={https://doi.org/10.1101/2025.08.11.669635}
 }
 ```
 
