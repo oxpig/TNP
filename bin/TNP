@@ -273,7 +273,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
             cdr3_compactness_rho = compactness_calc(os.path.join(Model_data_loc, abbrev_name+"_NanoBodyBuilder2_Model.pdb"), "imgt", verbose=verbose)
             # in case calculation failed, e.g. anchor residues missing in structure
             if cdr3_compactness_rho != None:
-                cdr3_compactness = cdr3_compactness_rho / imgt_cdr3_length
+                cdr3_compactness = imgt_cdr3_length / cdr3_compactness_rho # UPDATED (corrected) 23.08.25
                 fo.write("TNP was able to calculate a CDR3 compactness score for your model structure.\n")
                 if verbose: 
                     print(linedivide + "TNP was able to calculate a CDR3 compactness score for your model structure.\n\n")
@@ -428,7 +428,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
 #         cdr3_compactness_rho = compactness_calc(model_path, "imgt", verbose=verbose)
 
 #         if cdr3_compactness_rho != None:
-#             cdr3_compactness = cdr3_compactness_rho / cdr3_len
+#             cdr3_compactness = cdr3_len / cdr3_compactness_rho 
 #         else:
 #             cdr3_compactness = np.nan()
 
