@@ -129,7 +129,7 @@ def main_compactness(input_file,numbering_scheme,verbose=True):
         c, __ = get_H3_anchor_line(data)
         h = np.mean(np.array(data['cdrs'][3]), axis=0)
         rho = get_spherical_coordinates(h, c)
-        return rho # return loop reach, divide by cdr3 length calculated in main script to get compactness
+        return rho # return loop reach, used in calculation in main script to get compactness (cdr3 length / rho)
     
     except Exception as e:
         print(e)
