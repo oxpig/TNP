@@ -63,7 +63,12 @@ TNP -s QVKLQESGAELARPGASVKLSCKASGYTFTNYWMQWVKQRPGQGLDWIGAIYPGDGNTRYTHKFKGKATLTAD
 # UPDATE FLAG VALUES HERE    
 # Function to assign a flag colour based on the value of a TNP metric
 def assign_flag(metric, value):
-    
+
+    # A metric that could not be calculated is not a pass. NaN compares False
+    # against every threshold below, so without this it falls through to green.
+    if value is None or np.isnan(value):
+        return "grey"
+
     # Total CDR Length (L)
     if metric == "L":
         if   value <  20 or  value >  39:
@@ -341,7 +346,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
                 from theraprofnano.Plotters.PPC_D3_Template import ppc_graph
                 from theraprofnano.Plotters.PNC_D3_Template import pnc_graph
 
-                flag2hex = { "red": "#FF0000", "amber": "#FFA500", "green": "#5CBE67" }
+                flag2hex = { "red": "#FF0000", "amber": "#FFA500", "green": "#5CBE67", "grey": "#808080" }
 
                 #CDR LENGTH GRAPH
                 cdr_graph['data']['data01'][0][5] = nb_tnp_dictionary['Total CDR Length']        # 5 for upper and lower bound, 3 for upper only
