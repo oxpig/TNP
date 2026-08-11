@@ -610,7 +610,7 @@ if __name__ == "__main__":
     # Print results summary
     if args.sequence or args.file:
         for seqid in sequences:
-            if seqid in results_dict and results_dict[seqid] != {}:
+            if results_dict.get(seqid):
                 print("\n")
                 print("Summary Statistics for %s:\n" %(seqid))
                 print("    Total IMGT CDR Length: %d (%s flag)" %(results_dict[seqid]['Total CDR Length'], results_dict[seqid]['Flags']['L'].upper()))
