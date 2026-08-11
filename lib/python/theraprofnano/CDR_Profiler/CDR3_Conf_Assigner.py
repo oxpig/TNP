@@ -131,8 +131,11 @@ def main_compactness(input_file,numbering_scheme,verbose=True):
         rho = get_spherical_coordinates(h, c)
         return rho # return loop reach, used in calculation in main script to get compactness (cdr3 length / rho)
     
-    except Exception as e:
-        print(e)
+    # KeyError: anchor residues absent from the structure. IndexError/ValueError:
+    # malformed ATOM records, or a numbering scheme with no boundaries defined.
+    # OSError: the model file could not be read.
+    except (KeyError, IndexError, ValueError, OSError) as e:
+        print("CDR3 compactness calculation failed: %s: %s" % (type(e).__name__, e))
         return None
 
     finally:
