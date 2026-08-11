@@ -135,7 +135,8 @@ def main_compactness(input_file,numbering_scheme,verbose=True):
         print(e)
         return None
 
-    os.system('rm -rf '+temp_dir)   #Finally, forcibly remove all temporary files + folders
+    finally:
+        os.system('rm -rf '+temp_dir)   #Finally, forcibly remove all temporary files + folders
 
 ##############################################################################
 #CODE STARTS HERE#
