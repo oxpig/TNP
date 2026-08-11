@@ -435,11 +435,11 @@ def CreateAnnotation(annotation_index,which_ph,input_file,chains,numbering_schem
                                 if res2.res_type in acceptors:
                                         d = res1.sb_distance(res1,res2)
                                         if d < 3.2:     #Literature recommended cutoff for salt bridge formation
-                                                residues[r1]['Positive'] = 0
-                                                residues[r1]['Charge'] = 0
+                                                residues[r1]['positive'] = 0
+                                                residues[r1]['charge'] = 0
                                                 residues[r1]['hydrophobic'] = hydrophobicity_annotation["GLY"]
-                                                residues[r2]['Negative'] = 0
-                                                residues[r2]['Charge'] = 0      #Neutralise all charges - assume in permanent salt bridge so not physiologically relevant
+                                                residues[r2]['negative'] = 0
+                                                residues[r2]['charge'] = 0      #Neutralise all charges - assume in permanent salt bridge so not physiologically relevant
                                                 residues[r2]['hydrophobic'] = hydrophobicity_annotation["GLY"]
                                                 sb_list.append((str(r1[0])+str(r1[1][0])+str(r1[1][1])+": "+str(res1.res_type),str(r2[0])+str(r2[1][0])+str(r2[1][1])+": "+str(res2.res_type),str("{0:.4f}".format(d))))
                                                 num_saltbridges += 1
