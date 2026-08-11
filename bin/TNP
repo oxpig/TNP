@@ -278,7 +278,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
                 if verbose: 
                     print(linedivide + "TNP was able to calculate a CDR3 compactness score for your model structure.\n\n")
             else:
-                cdr3_compactness = np.nan()
+                cdr3_compactness = np.nan
                 fo.write("TNP was not able to calculate a CDR3 compactness score for your model structure.\n")
                 if verbose: 
                     print(linedivide + "TNP was not able to calculate a CDR3 compactness score for your model structure.\n\n")
