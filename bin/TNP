@@ -224,7 +224,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
                 print(linedivide + "Calling NanoBodyBuilder2 (ImmuneBuilder model for nanobodies) to model your nanobody\n\n") # NEW
 
             try:
-                os.mkdir(abbrev_name)
+                os.makedirs(abbrev_name, exist_ok=True)
 
                 cmd = ["NanoBodyBuilder2",
                        "--heavy_sequence", heavy_sequence,
