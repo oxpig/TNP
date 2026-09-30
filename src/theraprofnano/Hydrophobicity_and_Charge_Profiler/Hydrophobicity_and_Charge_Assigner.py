@@ -4,6 +4,7 @@ from os import listdir
 import os,sys,tempfile
 from os.path import isfile, join
 from .Common.PDBUtils import PDBchain
+from .surface import side_chain_accessibility
 import pickle
 
 local_path = os.path.dirname(os.path.realpath(__file__))
@@ -106,67 +107,6 @@ definitions = {
                         }
                 }
 
-##############################################################################################
-#FETCHES  the TOTAL AREA of the SIDE-CHAIN
-
-def parsePSAArea(psafile):
-
-        dicto = dict()
-        curr_chain = 'H'
-        dicto['H'] = dict()
-        dicto['L'] = dict()     #Initialise an empty dictionary, dicto = {'H':{},'L':{}}
-        last = -1
-
-        for line in open(psafile):
-                        line =        line.strip()    #Creat a list, items of which were separated by \n
-                        
-                        if line[0:6] =='ACCESS':
-                                sid_int = int(line[6:11])
-                                if sid_int<last:
-                                        curr_chain = 'L'
-                                last = sid_int
-                                sid = line[6:12].replace(" ","")
-                                dicto[curr_chain][sid] = float(line[55:61])
-                                
-        return dicto
-
-#############################################################################################
-#PARSES the PSA OUTPUT, Chains should be HEAVY FIRST, then LIGHT.
-
-def parsePSA(psafile, verbose=True):
-
-        dicto = dict()
-        curr_chain = 'H'
-        dicto['H'] = dict()
-        dicto['L'] = dict()     #Initialise an empty dictionary, dicto = {'H':{},'L':{}}
-        last = -1
-        
-        for line in open(psafile):
-                        line =        line.strip()    #Create a list, items of which were separated by \n
-                        # if verbose:
-                        #     print(line)
-                        if line[0:6] =='ACCESS':
-                                sid_int = int(line[6:11])
-                                if sid_int<last:
-                                        curr_chain = 'L'
-                                last = sid_int
-                                sid = line[6:12].replace(" ","")
-                                dicto[curr_chain][sid] = float(line[61:67])     #This code populates the dictionary with the appropriate info...
-        return dicto
-
-#############################################################################################
-#STARTS the PSA SOFTWARE - VERSION DEPENDS ON OS
-
-def runPSA(pdb_file,where_to,verbose=True):
-        
-        extension = ""
-
-        #If we are on a mac, run the mac version.
-        if (sys.platform=='darwin'):
-                extension = "_mac"
-        psa = join(local_path, "bin", "psa"+extension)
-        os.system(psa+" -t "+pdb_file+" > "+where_to)      #the bash code to run PSA
-
 #############################################################################################
 #CREATES a TEMPORARY FOLDER in the USER DIRECTORY. Returns as a variable#
 def create_temp_folder():
@@ -222,34 +162,14 @@ def CreateAnnotation(annotation_index,which_ph,input_file,chains,numbering_schem
 
         hydrophobicity_annotation = normalize(hydrophobics,annotation_index)    #calls up a function to normalise the scores within requested scoring system
         
-        #Set up a temporary directory
+        #STEP 1. Get the surface-exposed residues: the relative accessibility (%) and the total area of each side chain
 
-        temp_dir = create_temp_folder()
-        
-        os.mkdir(join(temp_dir,'surface'))      #Creates a temporary directory called surface
+        asa, asa_area = side_chain_accessibility(input_file)
 
-        if verbose:
-            print("Temporary results stored in", temp_dir)
-
-        chothia_file = join(temp_dir,'input.pdb')
-
-        os.system('cp '+input_file+' '+chothia_file)    #note variable is called chothia_file, but may be numbered in imgt
-
-        
-        #STEP 1. Get the surface-exposed residues by running PSA
-
-        surface_file = join(temp_dir,'surface','result.psa')    #generate a new temporary file in temp directory 'surface'
-
-        runPSA(chothia_file,surface_file)  #Starts up the PSA software, depending on your current OS
-
-        asa = parsePSA(surface_file, verbose=verbose)    #Returns a dictionary with PSA values for each H chain
-        
-        asa_area = parsePSAArea(surface_file)   #Returns a dictionary with total areas for each side chain within each H chain
-        
 
         #STEP 2: Evaluate Hydrophobicity-Scaled Accessible Surface Areas (HASAs) and Charges
         
-        nb_structure = {'H':PDBchain(chothia_file,'H')}  #Load in the ab heavy and light chains in following format
+        nb_structure = {'H':PDBchain(input_file,'H')}  #Load in the ab heavy and light chains in following format
         heavy_fv_charge = 0
         
         h1_charge = 0
@@ -272,7 +192,7 @@ def CreateAnnotation(annotation_index,which_ph,input_file,chains,numbering_schem
                         res_asa_area = 0
 
                         try:
-                                res_asa = asa[chain][str(elem[0])+elem[1]]      #Looks up in the returned dictionaries from PSA software for asa['H']['4H'], for example
+                                res_asa = asa[chain][str(elem[0])+elem[1]]      #Looks up the accessibility of residue H4, for example
                                 res_asa_area = asa_area[chain][str(elem[0])+elem[1]]    #Looks up as above, but in the area dictionary
                         
                         except KeyError:
@@ -484,8 +404,6 @@ def CreateAnnotation(annotation_index,which_ph,input_file,chains,numbering_schem
                 stats[annotation_index]['Patch_Hydrophob_CDR'] = float("{0:.4f}".format(adj_matrix_cdr['hydrophobic']['hydrophobic']))     #CDR Vicinity Patch HASA
                 stats[annotation_index]['Patch_Pos_Charge_CDR'] = float("{0:.4f}".format(adj_matrix_cdr['positive']['positive']))     #CDR Vicinity Patch +CASA
                 stats[annotation_index]['Patch_Neg_Charge_CDR'] = float("{0:.4f}".format(adj_matrix_cdr['negative']['negative']))     #CDR Vicinity Patch -CASA
-
-                os.system('rm -rf '+temp_dir)   #Finally, forcibly remove all temporary files + folders
 
         #WRITE THE ANNOTATED PDB FILE!
         

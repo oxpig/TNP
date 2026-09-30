@@ -19,6 +19,7 @@ authors = [
 # Bioconda: install TNP with Conda (see README.md), or use `environment.yml`.
 dependencies = [
   "biopython>=1.83",
+  "freesasa",
   "ImmuneBuilder>=1.2",
   "numpy",
   "openmm",
