@@ -1,0 +1,35 @@
+# Development environment for TNP.
+#
+#   conda env create -f environment.yml
+#   conda activate tnp
+#   pip install --no-deps --editable .
+#
+# ANARCI comes from Bioconda: the `anarci` package on PyPI is not an official
+# release and must not be used.  PyTorch is deliberately left as plain
+# `pytorch`, so that Conda picks a CUDA build where a GPU is detected and a CPU
+# build otherwise.
+name: tnp
+channels:
+  - conda-forge
+  - bioconda
+dependencies:
+  - python=3.13
+  - anarci=2024.05.21
+  - biopython=1.88
+  - dssp=4.6.1
+  - einops=0.8.2
+  - hmmer=3.4
+  - numpy=2.5.3
+  - openmm=8.6.1
+  - pdbfixer=1.12
+  - pytorch=2.13.0
+  - requests=2.34.2
+  - scikit-learn=1.9.1
+  - scipy=1.18.1
+  # Development tools
+  - pip=26.2.1
+  - pytest=9.1.1
+  - ruff=0.16.9
+  - pip:
+      # Not yet on Conda.  Its dependencies are all satisfied from Conda above.
+      - immunebuilder==1.2

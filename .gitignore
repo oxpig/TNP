@@ -1,6 +1,13 @@
+__pycache__/
+*.py[cod]
 .ipynb_checkpoints/
-data/
+.pytest_cache/
+.ruff_cache/
+
 build/
 dist/
-theraprofnano.egg-info/
-__pycache__/
+*.egg-info/
+
+# TNP run outputs
+TNP_output/
+data/

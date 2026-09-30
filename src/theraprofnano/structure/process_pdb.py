@@ -9,9 +9,9 @@ from Bio import PDB
 #from ABDB.AbPDB.Select import select_all
 
 #from ABDB.AB_Utils.sequence_liabilities import get_liabilities
-from scripts.sequence_liabilities import get_liabilities # modified from sabdab version
+from .sequence_liabilities import get_liabilities # modified from sabdab version
 #from ABDB.AB_Utils.region_definitions import annotate_regions
-from scripts.region_definitions import annotate_regions
+from .region_definitions import annotate_regions
 from ImmuneBuilder.sequence_checks import number_sequences
 
 # dict to convert three letter code to one letter code

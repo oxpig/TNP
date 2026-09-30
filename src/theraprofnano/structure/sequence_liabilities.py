@@ -3,7 +3,7 @@
 import os
 import re
 #from ABDB.AB_Utils.region_definitions import Accept
-from scripts.region_definitions import Accept
+from .region_definitions import Accept
 from anarci import anarci, anarci_output
 
 # annotate_sequences accounts for if only VH or VL

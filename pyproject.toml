@@ -1,0 +1,69 @@
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
+
+[project]
+name = "tnp"
+version = "0.1.0"
+description = "TNP: the Therapeutic Nanobody Profiler."
+readme = "README.md"
+requires-python = ">=3.11"
+license = "BSD-3-Clause"
+license-files = ["LICENCE"]
+authors = [
+  { name = "Gemma Gordon", email = "opig@stats.ox.ac.uk" },
+  { name = "Charlotte M. Deane", email = "opig@stats.ox.ac.uk" },
+]
+# ANARCI is also a runtime dependency, but it is deliberately absent here.  The
+# `anarci` package on PyPI is not an official release, so ANARCI must come from
+# Bioconda: install TNP with Conda (see README.md), or use `environment.yml`.
+dependencies = [
+  "biopython>=1.83",
+  "ImmuneBuilder>=1.2",
+  "numpy",
+  "openmm",
+  "pdbfixer",
+  "scikit-learn",
+  "scipy",
+]
+
+[project.urls]
+Homepage = "https://opig.stats.ox.ac.uk/webapps/tnp"
+Repository = "https://github.com/oxpig/TNP"
+
+[project.scripts]
+TNP = "theraprofnano.cli:main"
+
+[tool.uv.build-backend]
+module-name = "theraprofnano"
+
+[tool.pytest.ini_options]
+addopts = ["--import-mode=importlib"]
+
+[tool.ruff]
+src = ["src", "tests"]
+line-length = 88
+# Only syntax errors and undefined names for now.  Broaden this as the legacy
+# code is tidied, towards the rule set used in oxpig/ANARCII.
+lint.select = ["E9", "F63", "F7", "F82"]
+
+[tool.bumpversion]
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+search = "{current_version}"
+replace = "{new_version}"
+regex = false
+ignore_missing_version = false
+ignore_missing_files = false
+tag = true
+sign_tags = true
+tag_name = "v{new_version}"
+tag_message = "Bump version: {current_version} → {new_version}"
+allow_dirty = false
+commit = true
+message = "Bump version: {current_version} → {new_version}"
+moveable_tags = []
+commit_args = ""
+setup_hooks = []
+pre_commit_hooks = []
+post_commit_hooks = []

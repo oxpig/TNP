@@ -1,5 +1,3 @@
-#!/data/localhost/gordon/miniconda3/envs/nanob/bin/python
-
 ####################################################################################################
 ####                          The Therapeutic Nanobody Profiler (TNP)                           ####
 ####################################################################################################
@@ -38,11 +36,11 @@ header = linedivide + """
 
 ---------------------------------------------------------------------------------------------------------\n
 ---------------------------------------------------------------------------------------------------------\n
-                \/                       _____ _   _ ____                   \/
-                ⊂'l                      |_   _| \ | |  _ \                 ⊂'l     
-                ll                        | | |  \| | |_) |                 ll     
-                llama~                    | | | |\  |  __/                  llama~ 
-                || ||                     |_| |_| \_|_|                     || || 
+                \\/                       _____ _   _ ____                   \\/
+                ⊂'l                      |_   _| \\ | |  _ \\                 ⊂'l     
+                ll                        | | |  \\| | |_) |                 ll     
+                llama~                    | | | |\\  |  __/                  llama~ 
+                || ||                     |_| |_| \\_|_|                     || || 
                 '' ''                                                       '' ''
 ---------------------------------------------------------------------------------------------------------\n
 ---------------------------------------------------------------------------------------------------------\n
@@ -184,7 +182,7 @@ def get_tetrad_residues(sequence):
 
 
 # Main function that runs TNP on a sequence
-def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
+def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
 
     print(header)
 
@@ -253,9 +251,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
 
             try:
                 # Generate modelling_details.jsonp file (Now a separate step from ImmuneBuilder)
-                # import sys
-                # sys.path.append("../scripts/")
-                from scripts.process_pdb import get_modelling_details
+                from theraprofnano.structure.process_pdb import get_modelling_details
                 modelling_details = get_modelling_details(os.path.join(abbrev_name, abbrev_name)+".pdb", type='nanobody', save=True)
                 fo.write("Saved modelling_details.jsonp for NanoBodyBuilder2 (ImmuneBuilder) model\n")
 
@@ -466,7 +462,7 @@ def main(heavy_name, heavy_sequence, h_scale, output, web, verbose=False):
 ####################################################################################################
 ####################################################################################################
 
-if __name__ == "__main__":
+def main():
 
     # Set up argument parser
     parser = argparse.ArgumentParser(description="TNP Required Arguments")
@@ -528,7 +524,7 @@ if __name__ == "__main__":
         sequences[name] = {"heavy_name": heavy_name,
                            "heavy_chain": heavy_chain}
 
-        results_dict = {name: main(heavy_name,heavy_chain,h_scale,output,web,verbose)}
+        results_dict = {name: profile_sequence(heavy_name,heavy_chain,h_scale,output,web,verbose)}
         
         with open("TNP_Results_SingleSeqEntry_"+name+".json","w") as fo:
             json.dump(results_dict,fo)
@@ -558,13 +554,13 @@ if __name__ == "__main__":
             for seqid in sequences:
                 heavy_name = sequences[seqid]["heavy_name"]
                 heavy_chain = sequences[seqid]["heavy_chain"]
-                results_dict[seqid] = main(heavy_name,heavy_chain,h_scale,output,web,verbose)
+                results_dict[seqid] = profile_sequence(heavy_name,heavy_chain,h_scale,output,web,verbose)
         else:
             job_params = {}
             for seqid in sequences:
                 job_params[seqid] = [sequences[seqid]["heavy_name"], sequences[seqid]["heavy_chain"], h_scale, output, web, verbose]
             pool = mp.Pool(ncores)
-            j_list  = [ pool.apply_async( main, args = (blah) ) for blah in list(job_params.values()) ]
+            j_list  = [ pool.apply_async( profile_sequence, args = (blah) ) for blah in list(job_params.values()) ]
             mp_results = [ j.get() for j in j_list ]
             
             results_dict = {}
@@ -624,3 +620,7 @@ if __name__ == "__main__":
         
         print(linedivide)
 
+
+
+if __name__ == "__main__":
+    main()

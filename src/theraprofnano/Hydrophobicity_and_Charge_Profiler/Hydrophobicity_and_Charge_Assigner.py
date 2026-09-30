@@ -164,7 +164,8 @@ def runPSA(pdb_file,where_to,verbose=True):
         #If we are on a mac, run the mac version.
         if (sys.platform=='darwin'):
                 extension = "_mac"
-        os.system("psa"+extension+" -t "+pdb_file+" > "+where_to)      #the bash code to run PSA
+        psa = join(local_path, "bin", "psa"+extension)
+        os.system(psa+" -t "+pdb_file+" > "+where_to)      #the bash code to run PSA
 
 #############################################################################################
 #CREATES a TEMPORARY FOLDER in the USER DIRECTORY. Returns as a variable#
