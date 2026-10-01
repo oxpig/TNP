@@ -237,7 +237,7 @@ def make_liabilities_csv():
             "Integrin binding (RGD RYD LDV),fv,RGD|RYD|LDV\n"
             "CD11c/CD18 binding (GPR),fv,GPR\n"
             "Fragmentation (DP),cdrs;verniers,DP\n"
-            "Polyreactivity (RR VG VV VVV WW WWW WXW),fv,RR|VG|VV|VVV|WW|WWW|WXW\n")
+            "Polyreactivity (RR VG VV VVV WW WWW WXW),fv,RR|VG|VV|VVV|WW|WWW|W[^P]W\n")
 
     liability_path = os.path.join( os.path.split(__file__)[0], "liabilities.csv" )
     with open(liability_path,'w') as f:
