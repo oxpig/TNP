@@ -1,0 +1,63 @@
+name: Release
+
+# Make a GitHub release, with a signed source distribution, for each version
+# tag.  The Bioconda recipe builds from the release's source archive, and the
+# Bioconda bot picks up new releases automatically.
+on:
+  push:
+    tags: [ "v*" ]
+
+jobs:
+  tests:
+    uses: ./.github/workflows/tests.yaml
+    with:
+      slow: true
+
+  build:
+    name: Build the source distribution
+    needs: tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v10
+      - name: Build a source tarball
+        run: uv build --sdist
+      - name: Store the distribution
+        uses: actions/upload-artifact@v7
+        with:
+          name: sdist
+          path: dist/
+
+  github-release:
+    name: Sign the distribution and make a GitHub release
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # For making GitHub releases.
+      id-token: write  # For Sigstore.
+    steps:
+      - name: Download the distribution
+        uses: actions/download-artifact@v8
+        with:
+          name: sdist
+          path: dist/
+      - name: Sign the distribution with Sigstore
+        uses: sigstore/gh-action-sigstore-python@v3.5.0
+        with:
+          inputs: ./dist/*.tar.gz
+      - name: Create GitHub release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          gh release create "$GITHUB_REF_NAME"
+          --repo "$GITHUB_REPOSITORY"
+          --generate-notes
+      - name: Upload the distribution and signatures to the GitHub release
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: >-
+          gh release upload "$GITHUB_REF_NAME" dist/**
+          --repo "$GITHUB_REPOSITORY"

@@ -1,0 +1,44 @@
+name: Tests
+
+# Run on every pull request and push to `main`, and called by `release.yaml`, so
+# that no release is made from a commit whose tests fail.
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+  workflow_call:
+    inputs:
+      slow:
+        description: Also run the slow tests, which model a nanobody end to end.
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        # A login shell, so that the Conda environment is activated.
+        shell: bash -el {0}
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      # ANARCI and HMMER come from Bioconda, not PyPI.
+      - name: Set up Conda environment
+        uses: mamba-org/setup-micromamba@v3
+        with:
+          environment-file: environment.yml
+          cache-environment: true
+
+      - name: Install TNP
+        run: pip install --no-deps --editable .
+
+      - name: Lint
+        run: ruff check
+
+      - name: Run the tests
+        run: pytest ${{ inputs.slow && ' ' || '-m "not slow"' }}

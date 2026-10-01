@@ -1,0 +1,17 @@
+version: 2
+
+updates:
+  # Update the pinned versions in `environment.yml`, from conda-forge and
+  # Bioconda, including the `pip` section.
+  - package-ecosystem: "conda"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    groups:
+      conda-dependencies:
+        patterns: ["*"]
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
