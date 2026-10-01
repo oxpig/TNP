@@ -40,6 +40,7 @@ module-name = "theraprofnano"
 
 [tool.pytest.ini_options]
 addopts = ["--import-mode=importlib"]
+markers = ["slow: runs NanoBodyBuilder2, which takes minutes"]
 
 [tool.ruff]
 src = ["src", "tests"]
