@@ -41,4 +41,4 @@ jobs:
         run: ruff check
 
       - name: Run the tests
-        run: pytest ${{ inputs.slow && ' ' || '-m "not slow"' }}
+        run: pytest ${{ inputs.slow && '--runslow' || '' }}

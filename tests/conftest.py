@@ -23,3 +23,18 @@ def clinical_model(tmp_path, monkeypatch):
         return Path(shutil.copy(CLINICAL_MODELS / f"{name}_NanoBodyBuilder2_Model.pdb", tmp_path))
 
     return copy
+
+
+def pytest_addoption(parser):
+    parser.addoption(
+        "--runslow", action="store_true", default=False, help="run slow tests"
+    )
+
+
+def pytest_collection_modifyitems(config, items):
+    if config.getoption("--runslow"):
+        return
+    skip_slow = pytest.mark.skip(reason="need --runslow option to run")
+    for item in items:
+        if "slow" in item.keywords:
+            item.add_marker(skip_slow)
