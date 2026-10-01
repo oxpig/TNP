@@ -3,7 +3,6 @@ import os
 import json
 import anarci
 from Bio.PDB import PDBParser
-from Bio import PDB
 
 #from ABDB.AbPDB.AntibodyParser import AntibodyParser
 #from ABDB.AbPDB.Select import select_all
@@ -21,31 +20,6 @@ d3to1 = {'CYS': 'C', 'ASP': 'D', 'SER': 'S', 'GLN': 'Q', 'LYS': 'K',
 'ALA': 'A', 'VAL':'V', 'GLU': 'E', 'TYR': 'Y', 'MET': 'M'}
 
 available_schemes = ["imgt", "chothia", "kabat", "martin"]
-
-# https://github.com/biopython/biopython/blob/master/Bio/PDB/DSSP.py
-# Wilke: Tien et al. 2013 https://doi.org/10.1371/journal.pone.0080635
-SASA_max = {
-    "ALA": 129.0,
-    "ARG": 274.0,
-    "ASN": 195.0,
-    "ASP": 193.0,
-    "CYS": 167.0,
-    "GLN": 225.0,
-    "GLU": 223.0,
-    "GLY": 104.0,
-    "HIS": 224.0,
-    "ILE": 197.0,
-    "LEU": 201.0,
-    "LYS": 236.0,
-    "MET": 224.0,
-    "PHE": 240.0,
-    "PRO": 159.0,
-    "SER": 155.0,
-    "THR": 172.0,
-    "TRP": 285.0,
-    "TYR": 263.0,
-    "VAL": 174.0,
-}
 
 def get_sequences_from_pdb(input_pdb):
     # Run parser
@@ -205,25 +179,6 @@ def get_cdr_ranges_from_pdb(input_pdb, type = "", scheme = "imgt", definition="i
         print("ERROR: Not a valid model 'type'. Options are: 'antibody', 'nanobody', 'tcr'")
 
     return cdr_ranges
-
-def exposed_buried(input_pdb, cutoff=0.075, probe_radius=1.4, n_points=100):
-    """
-    Calculate whether a resiude is exposed of buried
-    """
-    parser = PDB.PDBParser(QUIET=True)
-    structure = parser.get_structure('struct', input_pdb)    
-
-    sr = PDB.SASA.ShrakeRupley(probe_radius=probe_radius, n_points=n_points)
-
-    fab_structure = structure[0]
-
-    sr.compute(fab_structure, level="R")
-
-    rel_sasas = []
-    for res in fab_structure.get_residues():
-        rel_sasas.append((res.sasa / SASA_max[res.resname]) > cutoff)
-
-    return rel_sasas
 
 def run_dssp(structurefile, type=''):
     """
