@@ -344,6 +344,3 @@ if __name__ == '__main__':
 		print("There's something missing from your input!")
 
 	cleanup()
-
-
-

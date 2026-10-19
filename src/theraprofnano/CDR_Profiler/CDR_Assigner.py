@@ -121,4 +121,3 @@ if __name__ == '__main__':
 
         #Now call the main function to get ANARCI to do some analysis on this sequence!
         main(input_sequence,options.current_species,ncores)
-

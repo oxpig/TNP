@@ -281,6 +281,3 @@ else:
 	print("There's something missing from your input!")
 
 cleanup()
-
-
-

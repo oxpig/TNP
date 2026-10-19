@@ -185,4 +185,3 @@ class PDBchain:
 			print("IOError: ",path_to_pdb,"does not exist")
 			quit()
 		
-
