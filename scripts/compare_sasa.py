@@ -23,11 +23,11 @@ import tempfile
 from pathlib import Path
 
 import numpy as np
-from Bio.PDB import PDBParser
-from Bio.SeqUtils import seq1
+from Bio import SeqIO
 
 ROOT = Path(__file__).resolve().parent.parent
 MODELS = ROOT / "paper/paper_data/vhh_clinical_set_models"
+SEQUENCES = ROOT / "paper/paper_data/sequences/vhh_tsd.fasta"
 PUBLISHED = ROOT / "paper/paper_data/insilico_descriptors/VHH_TSD_all_properties_FINAL.csv"
 METRICS = {
     "PSH": "Patch_Hydrophob_CDR",
@@ -71,19 +71,20 @@ def baseline(source_tree):
 
 
 def published():
-    """Return the published metrics, keyed by model name via sequence."""
-    parser = PDBParser(QUIET=True)
-    by_sequence = {}
-    for model in MODELS.glob("*.pdb"):
-        residues = parser.get_structure(model.stem, model).get_residues()
-        by_sequence["".join(seq1(r.get_resname()) for r in residues)] = model.stem
+    """Return the published metrics, keyed by model name.
+
+    Rows are matched to models by sequence, via the names in `SEQUENCES`, rather
+    than by comparing against the models' own sequences, which NanoBodyBuilder2
+    may have trimmed.
+    """
+    names = {str(r.seq): r.id for r in SeqIO.parse(SEQUENCES, "fasta")}
 
     results = {}
     with open(PUBLISHED) as f:
         for row in csv.DictReader(f):
-            model = by_sequence.get(row["Sequence"])
-            if model:
-                results[model] = {
+            model = MODELS / f"{names.get(row['Sequence'])}_NanoBodyBuilder2_Model.pdb"
+            if model.is_file():
+                results[model.stem] = {
                     m: float(row[column]) for m, column in PUBLISHED_COLUMNS.items()
                 }
             else:
