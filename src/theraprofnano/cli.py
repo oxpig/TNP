@@ -17,6 +17,8 @@ from theraprofnano.Plotters.CDR3Conf_D3_Template import cdr3_conf_graph
 from theraprofnano.Plotters.PSH_D3_Template import psh_graph
 from theraprofnano.Plotters.PPC_D3_Template import ppc_graph
 from theraprofnano.Plotters.PNC_D3_Template import pnc_graph
+from theraprofnano.Plotters import set_threshold_lines
+from theraprofnano.thresholds import assign_flag  # noqa: F401 (re-exported)
 import numpy as np
 #from ABDB.AbPDB import AntibodyParser
 from Bio import SeqIO
@@ -57,79 +59,6 @@ TNP -s QVKLQESGAELARPGASVKLSCKASGYTFTNYWMQWVKQRPGQGLDWIGAIYPGDGNTRYTHKFKGKATLTAD
 """ + linedivide
 
 
-####################################################################################################
-# UPDATE FLAG VALUES HERE    
-# Function to assign a flag colour based on the value of a TNP metric
-def assign_flag(metric, value):
-
-    # A metric that could not be calculated is not a pass. NaN compares False
-    # against every threshold below, so without this it falls through to green.
-    if value is None or np.isnan(value):
-        return "grey"
-
-    # Total CDR Length (L)
-    if metric == "L":
-        if   value <  20 or  value >  39:
-            return "red"
-        elif value >= 20 and value <= 24:
-            return "amber"
-        elif value >= 37 and value <= 39:
-            return "amber"
-        else:
-            return "green"
-        
-    # CDR3 Length (L3)
-    elif metric == "L3":
-        if   value <  5 or  value >  23:
-            return "red"
-        elif value >= 5 and value <= 8:
-            return "amber"
-        elif value >= 21 and value <= 23:
-            return "amber"
-        else:
-            return "green"
-    
-    # Total CDR3 compactness (C)
-    elif metric == "C":
-        if   value <  0.56 or  value >  1.61:
-            return "red"
-        elif value >= 0.56 and value <= 0.81:
-            return "amber"
-        elif value >= 1.57 and value <= 1.61:
-            return "amber"
-        else:
-            return "green"
-            
-    # Patches of surface hydrophobicity (PSH)
-    elif metric == "PSH":
-        if   value <  73.40 or  value >  155.47:
-            return "red"
-        elif value >= 73.40 and value <= 79.59:
-            return "amber"
-        elif value >= 126.83 and value <= 155.47:
-            return "amber"
-        else:
-            return "green"
-
-    # Patches of positive charge (PPC)
-    elif metric == "PPC":
-        if   value > 1.18:
-            return "red"
-        elif value >= 0.39 and value <= 1.18:
-            return "amber"
-        else:
-            return "green"
-            
-    # Patches of negative charge (PNC)
-    elif metric == "PNC":
-        if   value > 1.88:
-            return "red"
-        elif value >= 1.47 and value <= 1.88:
-            return "amber"
-        else:
-            return "green"
-            
-            
 ####################################################################################################
 # Stuff to remove hydrogens from NanoBodyBuilder2 output models 
 # NOTE - from TAP - [23 Jan 2023, Broncio]: ImmuneBuilder add hydrogens by default for openmm relaxation
@@ -345,6 +274,7 @@ def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=F
                 flag2hex = { "red": "#FF0000", "amber": "#FFA500", "green": "#5CBE67", "grey": "#808080" }
 
                 #CDR LENGTH GRAPH
+                set_threshold_lines(cdr_graph, "L")
                 cdr_graph['data']['data01'][0][5] = nb_tnp_dictionary['Total CDR Length']        # 5 for upper and lower bound, 3 for upper only
                 cdr_graph['data']['data01'][1][5] = nb_tnp_dictionary['Total CDR Length']
                 cdr_graph['axes'][0]['lines'][4]['color'] = flag2hex[nb_tnp_dictionary['Flags']['L']]
@@ -353,6 +283,7 @@ def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=F
                     json.dump(cdr_graph,fo4)
 
                 #CDR3 LENGTH GRAPH
+                set_threshold_lines(cdr3_len_graph, "L3")
                 cdr3_len_graph['data']['data01'][0][5] = nb_tnp_dictionary['CDR3 Length']        
                 cdr3_len_graph['data']['data01'][1][5] = nb_tnp_dictionary['CDR3 Length']
                 cdr3_len_graph['axes'][0]['lines'][4]['color'] = flag2hex[nb_tnp_dictionary['Flags']['L3']]
@@ -361,6 +292,7 @@ def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=F
                     json.dump(cdr3_len_graph,fo4)
                 
                 #CDR3 COMPACTNESS GRAPH
+                set_threshold_lines(cdr3_conf_graph, "C")
                 cdr3_conf_graph['data']['data01'][0][5] = nb_tnp_dictionary['CDR3 Compactness']       
                 cdr3_conf_graph['data']['data01'][1][5] = nb_tnp_dictionary['CDR3 Compactness']
                 cdr3_conf_graph['axes'][0]['lines'][4]['color'] = flag2hex[nb_tnp_dictionary['Flags']['C']]
@@ -369,6 +301,7 @@ def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=F
                     json.dump(cdr3_conf_graph,fo4)
 
                 #PSH GRAPH
+                set_threshold_lines(psh_graph, "PSH")
                 psh_graph['data']['data01'][0][5] = nb_tnp_dictionary['PSH']#['Hydrophobicity and Charge'][0]['Patch_Hydrophob_CDR']
                 psh_graph['data']['data01'][1][5] = nb_tnp_dictionary['PSH']#['Hydrophobicity and Charge'][0]['Patch_Hydrophob_CDR']
                 psh_graph['axes'][0]['lines'][4]['color'] = flag2hex[nb_tnp_dictionary['Flags']['PSH']]       
@@ -377,6 +310,7 @@ def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=F
                     json.dump(psh_graph,fo4)
 
                 #PPC GRAPH
+                set_threshold_lines(ppc_graph, "PPC")
                 ppc_graph['data']['data01'][0][3] = nb_tnp_dictionary['PPC']#['Hydrophobicity and Charge'][0]['Patch_Pos_Charge_CDR']
                 ppc_graph['data']['data01'][1][3] = nb_tnp_dictionary['PPC']#['Hydrophobicity and Charge'][0]['Patch_Pos_Charge_CDR']
                 ppc_graph['axes'][0]['lines'][2]['color'] = flag2hex[nb_tnp_dictionary['Flags']['PPC']]
@@ -385,6 +319,7 @@ def profile_sequence(heavy_name, heavy_sequence, h_scale, output, web, verbose=F
                     json.dump(ppc_graph,fo4)
 
                 #PNC GRAPH
+                set_threshold_lines(pnc_graph, "PNC")
                 pnc_graph['data']['data01'][0][3] = nb_tnp_dictionary['PNC']#['Hydrophobicity and Charge'][0]['Patch_Neg_Charge_CDR']
                 pnc_graph['data']['data01'][1][3] = nb_tnp_dictionary['PNC']#['Hydrophobicity and Charge'][0]['Patch_Neg_Charge_CDR']
                 pnc_graph['axes'][0]['lines'][2]['color'] = flag2hex[nb_tnp_dictionary['Flags']['PNC']]
