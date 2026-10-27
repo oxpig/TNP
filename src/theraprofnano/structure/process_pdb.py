@@ -192,12 +192,7 @@ def run_dssp(structurefile, type=''):
 
     from Bio.PDB.DSSP import DSSP
     from Bio.PDB.PDBParser import PDBParser
-    # Updated to Biopython=1.88 format
-    from Bio.Data.IUPACData import protein_letters_3to1
-    AA3_TO_1 = {k.upper(): v for k, v in protein_letters_3to1.items()}
-    def three_to_one(resname):
-        resname = resname.strip().upper()
-        return AA3_TO_1.get(resname, "X")
+    from Bio.SeqUtils import seq1
 
     def dssp(model, structurefile):
         # DSSP 4 tries to read its input as mmCIF before falling back to PDB,
@@ -256,7 +251,7 @@ def run_dssp(structurefile, type=''):
                 if r.id[0] !="W":
                     dssp_properties[chain.id].append( [ r.id[1:], r.resname, r.xtra ] )
                     try:
-                        print(",".join( [ chain.id, str(r.id[1]), r.id[2], three_to_one(r.get_resname()), "%.2f"%r.xtra['EXP_DSSP_ASA'], "%.2f"%r.xtra['EXP_DSSP_RASA'],
+                        print(",".join( [ chain.id, str(r.id[1]), r.id[2], seq1(r.get_resname()), "%.2f"%r.xtra['EXP_DSSP_ASA'], "%.2f"%r.xtra['EXP_DSSP_RASA'],
                                 r.xtra['SS_DSSP'],"%.2f"%r.xtra['PHI_DSSP'],"%.2f"%r.xtra['PSI_DSSP'] ]), file=fout)
                     except KeyError:
                         print(",".join([chain.id, str(r.id[1]),r.id[2],"-","-","-","-","-","-"]), file=fout)
