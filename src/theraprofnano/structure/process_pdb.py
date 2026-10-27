@@ -233,6 +233,8 @@ def run_dssp(structurefile, type=''):
     @return: A dictionary containing H and L as keys and a list of residue identifiers and dictionaries containing the properties of each residue.
     """
 
+    import warnings
+
     from Bio.PDB.DSSP import DSSP
     from Bio.PDB.PDBParser import PDBParser
     # Updated to Biopython=1.88 format
@@ -241,7 +243,17 @@ def run_dssp(structurefile, type=''):
     def three_to_one(resname):
         resname = resname.strip().upper()
         return AA3_TO_1.get(resname, "X")
-        
+
+    def dssp(model, structurefile):
+        # DSSP 4 tries to read its input as mmCIF before falling back to PDB,
+        # and reports the failed attempt on stderr, which Biopython raises as a
+        # warning.
+        with warnings.catch_warnings():
+            warnings.filterwarnings(
+                "ignore", message=".*does not seem to be an mmCIF file"
+            )
+            return DSSP(model, structurefile)
+
     if type == 'tcr':
         dssp_properties = {"B":[], "A":[]}
         # Parse the model to get a structure object
@@ -249,7 +261,7 @@ def run_dssp(structurefile, type=''):
 
         # Run DSSP on the model to annotate residues
         try:
-            _ = DSSP( s[0], structurefile) 
+            _ = dssp( s[0], structurefile) 
         except OSError: 
             # dssp is not installed so cannot be run.
             return {"B":[], "A":[]}, None, "DSSP is not in the path"
@@ -262,7 +274,7 @@ def run_dssp(structurefile, type=''):
 
         # Run DSSP on the model to annotate residues
         try:
-            _ = DSSP( s[0], structurefile) 
+            _ = dssp( s[0], structurefile) 
         except OSError: 
             # dssp is not installed so cannot be run.
             return {"H":[], "L":[]}, None, "DSSP is not in the path"
