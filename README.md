@@ -47,6 +47,14 @@ The code and data in this package is based on the <a href="https://doi.org/10.11
 }
 ```
 
+## Web tool
+
+This tool is also available as a live [web app](https://opig.stats.ox.ac.uk/webapps/tnp):
+
+<https://opig.stats.ox.ac.uk/webapps/tnp>
+
+If you use this code or the web tool in your work, please [cite the paper](#citing-this-work).
+
 ## Installation
 
 In the package directory:
@@ -60,7 +68,6 @@ In the package directory:
 - [NanoBodyBuilder2](https://github.com/oxpig/ImmuneBuilder)
 - [DSSP](https://anaconda.org/salilab/dssp)
 - biopython 1.77
-
 
 ## Usage
 
