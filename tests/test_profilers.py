@@ -10,11 +10,11 @@ from theraprofnano.Hydrophobicity_and_Charge_Profiler.Hydrophobicity_and_Charge_
     CreateAnnotation,
 )
 
-# Calculated with `psa`, before it was replaced with FreeSASA.
+# With salt bridges neutralised, as they have been since oxpig/TNP#3 and #4.
 PATCHES = {
-    "seq1": (79.3304, 0.0515, 0.0),
-    "seq10": (88.7075, 0.1082, 1.4503),
-    "seq18": (79.0911, 1.1123, 0.0925),
+    "seq1": (80.7643, 0.0515, 0.0),
+    "seq10": (92.6541, 0.0, 1.3065),
+    "seq18": (83.8878, 0.0, 0.0),
 }
 CDR_LENGTHS = {
     "seq1": {"cdrh1": 8, "cdrh2": 7, "cdrh3": 5},

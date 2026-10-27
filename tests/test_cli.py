@@ -28,6 +28,7 @@ def test_assign_flag(metric, value, flag):
     assert assign_flag(metric, value) == flag
 
 
+@pytest.mark.parametrize("value", [np.nan, None])
 @pytest.mark.parametrize("metric", ["L", "L3", "C", "PSH", "PPC", "PNC"])
-def test_uncomputable_metric_is_flagged_red(metric):
-    assert assign_flag(metric, np.nan) == "red"
+def test_uncomputable_metric_is_flagged_grey(metric, value):
+    assert assign_flag(metric, value) == "grey"
