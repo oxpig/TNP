@@ -235,8 +235,13 @@ def run_dssp(structurefile, type=''):
 
     from Bio.PDB.DSSP import DSSP
     from Bio.PDB.PDBParser import PDBParser
-    from Bio.PDB.Polypeptide import three_to_one
-
+    # Updated to Biopython=1.88 format
+    from Bio.Data.IUPACData import protein_letters_3to1
+    AA3_TO_1 = {k.upper(): v for k, v in protein_letters_3to1.items()}
+    def three_to_one(resname):
+        resname = resname.strip().upper()
+        return AA3_TO_1.get(resname, "X")
+        
     if type == 'tcr':
         dssp_properties = {"B":[], "A":[]}
         # Parse the model to get a structure object
