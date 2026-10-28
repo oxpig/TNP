@@ -17,20 +17,16 @@ dependencies:
   - anarci=2024.05.21
   - biopython=1.88
   - dssp=4.6.1
-  - einops=0.8.2
   - freesasa=2.2.1
   - hmmer=3.4
+  - immunebuilder=1.2
   - numpy=2.5.3
   - openmm=8.6.1
   - pdbfixer=1.12
   - pytorch=2.13.0
-  - requests=2.34.2
   - scikit-learn=1.9.1
   - scipy=1.18.1
   # Development tools
   - pip=26.2.1
   - pytest=9.1.1
   - ruff=0.16.9
-  - pip:
-      # Not yet on Conda.  Its dependencies are all satisfied from Conda above.
-      - immunebuilder==1.2
