@@ -10,6 +10,11 @@ updates:
     groups:
       conda-dependencies:
         patterns: ["*"]
+    # Dependabot doesn't solve the Conda environment, so it would propose new
+    # Python minor versions that other packages (e.g. FreeSASA) don't support.
+    ignore:
+      - dependency-name: "python"
+        update-types: ["version-update:semver-minor"]
 
   - package-ecosystem: "github-actions"
     directory: "/"
