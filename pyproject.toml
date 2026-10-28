@@ -29,7 +29,7 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://opig.stats.ox.ac.uk/webapps/tnp"
+Homepage = "https://tnp.opig.stats.ox.ac.uk"
 Repository = "https://github.com/oxpig/TNP"
 
 [project.scripts]
