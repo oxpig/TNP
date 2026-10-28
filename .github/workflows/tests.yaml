@@ -25,11 +25,11 @@ jobs:
         shell: bash -el {0}
     steps:
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1  # v7.0.1
 
       # ANARCI and HMMER come from Bioconda, not PyPI.
       - name: Set up Conda environment
-        uses: mamba-org/setup-micromamba@v3
+        uses: mamba-org/setup-micromamba@f457c30a868e4760d3a6fcea5f25dc655b8edf39  # v3.2.1
         with:
           environment-file: environment.yml
           cache-environment: true
