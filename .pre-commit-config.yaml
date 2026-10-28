@@ -1,0 +1,25 @@
+ci:
+  autofix_prs: true
+  autofix_commit_msg: "Apply automatic fixes from pre-commit hooks"
+  autoupdate_schedule: weekly
+  autoupdate_commit_msg: "Bump pre-commit hook versions"
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        exclude: "^(tests/data|paper)/.*"
+      - id: check-yaml
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+        exclude: "^(tests/data|paper)/.*"
+
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.20
+    hooks:
+      - id: ruff
+        name: Lint with Ruff
+        args: [ --fix ]
+        types: [ python ]
