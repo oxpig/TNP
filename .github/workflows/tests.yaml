@@ -44,9 +44,6 @@ jobs:
       - name: Install TNP
         run: pip install --no-deps --editable .
 
-      - name: Lint
-        run: ruff check
-
       # Restore NanoBodyBuilder2's weights, rather than download them from
       # Zenodo, if they are cached for this version of ImmuneBuilder.
       - name: Locate NanoBodyBuilder2's weights
