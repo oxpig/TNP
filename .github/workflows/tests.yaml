@@ -19,6 +19,13 @@ permissions:
 jobs:
   pytest:
     runs-on: ubuntu-latest
+    # NanoBodyBuilder2 downloads its weights with no timeout, so a stalled
+    # download would otherwise hang until GitHub's six-hour limit.
+    timeout-minutes: 30
+    env:
+      # Run the slow tests for releases, and on pushes to `main`.  A release's
+      # tag can only restore the weights cached on its own ref or on `main`.
+      SLOW: ${{ inputs.slow || (github.event_name == 'push' && github.ref == 'refs/heads/main') }}
     defaults:
       run:
         # A login shell, so that the Conda environment is activated.
@@ -40,5 +47,37 @@ jobs:
       - name: Lint
         run: ruff check
 
+      # Restore NanoBodyBuilder2's weights, rather than download them from
+      # Zenodo, if they are cached for this version of ImmuneBuilder.
+      - name: Locate NanoBodyBuilder2's weights
+        id: weights
+        if: env.SLOW == 'true'
+        run: |
+          python - >> "$GITHUB_OUTPUT" <<'EOF'
+          from importlib.metadata import version
+          from pathlib import Path
+
+          import ImmuneBuilder
+
+          print(f"path={Path(ImmuneBuilder.__file__).parent / 'trained_model'}")
+          print(f"version={version('ImmuneBuilder')}")
+          EOF
+
+      - name: Restore NanoBodyBuilder2's weights
+        id: restore-weights
+        if: env.SLOW == 'true'
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: ${{ steps.weights.outputs.path }}/nanobody_model_*
+          key: nanobodybuilder2-weights-${{ steps.weights.outputs.version }}
+
       - name: Run the tests
-        run: pytest ${{ inputs.slow && '--runslow' || '' }}
+        run: pytest ${{ env.SLOW == 'true' && '--runslow' || '' }}
+
+      # The slow tests have downloaded the weights by now.
+      - name: Save NanoBodyBuilder2's weights
+        if: env.SLOW == 'true' && steps.restore-weights.outputs.cache-hit != 'true'
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9  # v6.1.0
+        with:
+          path: ${{ steps.weights.outputs.path }}/nanobody_model_*
+          key: nanobodybuilder2-weights-${{ steps.weights.outputs.version }}
