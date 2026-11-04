@@ -20,13 +20,13 @@ dependencies:
   - freesasa=2.2.1
   - hmmer=3.4
   - immunebuilder=1.2
-  - numpy=2.5.3
+  - numpy=2.5.4
   - openmm=8.6.1
   - pdbfixer=1.12
-  - pytorch=2.13.0
+  - pytorch=2.14.1
   - scikit-learn=1.9.1
   - scipy=1.18.1
   # Development tools
   - pip=26.2.1
-  - pytest=9.1.1
-  - ruff=0.16.9
+  - pytest=9.2.0
+  - ruff=0.17.3
