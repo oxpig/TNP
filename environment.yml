@@ -20,7 +20,7 @@ dependencies:
   - freesasa=2.2.1
   - hmmer=3.4
   - immunebuilder=1.2
-  - numpy=2.5.3
+  - numpy=2.5.5
   - openmm=8.6.1
   - pdbfixer=1.12
   - pytorch=2.13.0
